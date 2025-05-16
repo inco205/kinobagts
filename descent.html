@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exclusive Video</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #000000, #1a1a1a, #2b2b2b);
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      background-color: #000;
+    }
+
+    .video-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-wrapper">
+    <div class="video-frame">
+      <iframe src="https://app.videas.fr/embed/media/REPLACE_THIS_VIDEO_ID" 
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen 
+              referrerpolicy="unsafe-url">
+      </iframe>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = document.referrer;
+    const authParam = urlParams.get('auth');
+
+    let decoded = "";
+    try {
+      decoded = atob(authParam || "");
+    } catch (e) {
+      decoded = "";
+    }
+
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
+    const isFromFacebook = ref.includes("facebook.com");
+
+    if (!isCorrectAuth || !isFromFacebook) {
+      window.location.href = "access-denied.html";
+    }
+  </script>
+</body>
+</html>
