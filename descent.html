@@ -56,34 +56,23 @@
   </div>
 
   <script>
-  <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const authParam = urlParams.get('auth');
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth');
+    const ref = document.referrer;
 
-  let decoded = "";
-  try {
-    decoded = atob(authParam || "");
-  } catch (e) {
-    decoded = "";
-  }
+    let decoded = "";
+    try {
+      decoded = atob(authParam || "");
+    } catch (e) {
+      decoded = "";
+    }
 
-  const ref = document.referrer;
-  const isFromFacebook = ref.includes("facebook.com");
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
+    const isFromFacebook = ref.includes("facebook.com");
 
-  const isCorrectAuth = decoded === "fbgroup=2218891068566945";
-
-  // Redirect unless:
-  // - auth is correct
-  // - AND either referrer is facebook.com AND navigation type is a LINK
-  const navType = performance.getEntriesByType("navigation")[0]?.type;
-
-  const clickedFromLink = navType === "navigate";
-
-  if (!(isCorrectAuth && isFromFacebook && clickedFromLink)) {
-    window.location.href = "access-denied.html";
-  }
-</script>
-
+    if (!isCorrectAuth || !isFromFacebook) {
+      window.location.href = "access-denied.html";
+    }
   </script>
 </body>
 </html>
