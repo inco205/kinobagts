@@ -70,9 +70,10 @@
     const isCorrectAuth = decoded === "fbgroup=2218891068566945";
     const isFromFacebook = ref.includes("facebook.com");
 
-    if (!isCorrectAuth || !isFromFacebook) {
-      window.location.href = "access-denied.html";
-    }
+if (!document.referrer.includes("facebook.com")) {
+  window.location.href = "access-denied.html";
+}
+
   </script>
 </body>
 </html>
