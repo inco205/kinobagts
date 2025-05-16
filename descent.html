@@ -3,23 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Exclusive Video</title>
+  <title>Descent</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: linear-gradient(145deg, #000000, #1a1a1a, #2b2b2b);
-      background-attachment: fixed;
+      background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       padding: 40px 20px;
-      color: #fff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -52,9 +47,9 @@
 <body>
   <div class="video-wrapper">
     <div class="video-frame">
-      <iframe src="https://app.videas.fr/embed/media/REPLACE_THIS_VIDEO_ID" 
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen 
+      <iframe src="https://app.videas.fr/embed/media/your-video-id-here"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
               referrerpolicy="unsafe-url">
       </iframe>
     </div>
@@ -62,8 +57,8 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const ref = document.referrer;
     const authParam = urlParams.get('auth');
+    const ref = document.referrer;
 
     let decoded = "";
     try {
