@@ -48,9 +48,8 @@
   <div class="video-wrapper">
     <div class="video-frame">
       <iframe src="https://app.videas.fr/embed/media/4a43396d-63aa-41f9-8310-c627cd5ac0bb/"
-              allow="autoplay; encrypted-media; picture-in-picture"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
-              loading="lazy"
               referrerpolicy="unsafe-url">
       </iframe>
     </div>
@@ -68,12 +67,13 @@
       decoded = "";
     }
 
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
     const isFromFacebook = ref.includes("facebook.com");
 
-    if (!isCorrectAuth || !isFromFacebook) {
-      window.location.href = "access-denied.html";
-    }
+if (!document.referrer.includes("facebook.com")) {
+  window.location.href = "access-denied.html";
+}
+
   </script>
 </body>
 </html>
