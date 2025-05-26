@@ -52,6 +52,21 @@
               allowfullscreen
               referrerpolicy="unsafe-url">
       </iframe>
+<button id="refreshBtn" onclick="refreshPage()" style="
+  display: none;
+  margin: 20px auto;
+  padding: 15px 25px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+">
+  🔄 Video not playing? Tap here to refresh
+</button>
+
+      
     </div>
   </div>
 
@@ -83,6 +98,8 @@ if (!document.referrer.includes("facebook.com")) {
       const currentUrl = new URL(window.location.href);
       window.location.href = ${currentUrl.pathname}?auth=${authParam};
     }
+
+    
   </script>
 </body>
 </html>
