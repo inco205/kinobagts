@@ -1,28 +1,104 @@
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const authParam = urlParams.get('auth');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Descent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  let decoded = "";
-  try {
-    decoded = atob(authParam || "");
-  } catch (e) {
-    decoded = "";
-  }
+    body {
+      background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-  const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+    .video-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      background-color: #000;
+    }
 
-  if (!isCorrectAuth) {
-    window.location.href = "access-denied.html";
-  }
+    .video-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
 
-  // Show refresh button after 5 seconds
-  setTimeout(() => {
-    document.getElementById('refreshBtn').style.display = 'block';
-  }, 5000);
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-  // Reload with auth token preserved
-  function refreshWithAuth() {
-    const currentUrl = new URL(window.location.href);
-    window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
-  }
-</script>
+    #refreshBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 15px 25px;
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-wrapper">
+    <div class="video-frame">
+      <iframe src="https://app.videas.fr/embed/media/4a43396d-63aa-41f9-8310-c627cd5ac0bb/"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="unsafe-url">
+      </iframe>
+    </div>
+  </div>
+
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth');
+    const ref = document.referrer;
+
+    let decoded = "";
+    try {
+      decoded = atob(authParam || "");
+    } catch (e) {
+      decoded = "";
+    }
+
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
+    const isFromFacebook = ref.includes("facebook.com");
+
+    if (!isCorrectAuth) {
+      window.location.href = "access-denied.html";
+    }
+
+    // Show refresh button after 5 seconds
+    setTimeout(() => {
+      document.getElementById('refreshBtn').style.display = 'block';
+    }, 5000);
+
+    // Refresh the page while preserving auth
+    function refreshPage() {
+      const currentUrl = new URL(window.location.href);
+      window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
+    }
+  </script>
+</body>
+</html>
