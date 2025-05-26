@@ -80,7 +80,16 @@
 if (!document.referrer.includes("facebook.com")) {
   window.location.href = "access-denied.html";
 }
+ // Show refresh button after 5 seconds
+    setTimeout(() => {
+      document.getElementById('refreshBtn').style.display = 'block';
+    }, 5000);
 
+    // Refresh page while keeping auth param
+    function refreshPage() {
+      const currentUrl = new URL(window.location.href);
+      window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
+    }
   </script>
 </body>
 </html>
