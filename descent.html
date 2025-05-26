@@ -73,6 +73,7 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const authParam = urlParams.get('auth');
+    const ref = document.referrer;
 
     let decoded = "";
     try {
@@ -82,6 +83,7 @@
     }
 
     const isCorrectAuth = decoded === "fbgroup=2218891068566945";
+    const isFromFacebook = ref.includes("facebook.com");
 
     if (!isCorrectAuth) {
       window.location.href = "access-denied.html";
@@ -92,7 +94,7 @@
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
 
-    // Refresh page while keeping auth param
+    // Refresh the page while preserving auth
     function refreshPage() {
       const currentUrl = new URL(window.location.href);
       window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
