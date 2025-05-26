@@ -55,8 +55,7 @@
     </div>
   </div>
 
-<script>
-  window.addEventListener('load', () => {
+  <script>
     const urlParams = new URLSearchParams(window.location.search);
     const authParam = urlParams.get('auth');
     const ref = document.referrer;
@@ -68,17 +67,13 @@
       decoded = "";
     }
 
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
     const isFromFacebook = ref.includes("facebook.com");
 
-    if (!isCorrectAuth || !isFromFacebook) {
-      // Give the iframe time to render before redirect
-      setTimeout(() => {
-        window.location.href = "access-denied.html";
-      }, 100); // 100ms is usually enough
-    }
-  });
-</script>
+if (!document.referrer.includes("facebook.com")) {
+  window.location.href = "access-denied.html";
+}
 
+  </script>
 </body>
 </html>
