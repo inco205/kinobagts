@@ -53,6 +53,37 @@
                referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
+    <video id="myVideo" autoplay muted playsinline controls style="max-width: 100%; border-radius: 10px;">
+  <source src="your-video-link.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<button id="refreshBtn" onclick="location.reload()" style="
+  display: none;
+  margin: 20px auto;
+  padding: 15px 25px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+">
+  🔄 Having trouble? Tap to refresh
+</button>
+
+<script>
+  const video = document.getElementById('myVideo');
+  const refreshBtn = document.getElementById('refreshBtn');
+
+  // Wait 5 seconds, then check if video has started playing
+  setTimeout(() => {
+    if (video.paused || video.readyState < 3) {
+      refreshBtn.style.display = 'block';
+    }
+  }, 5000);
+</script>
+
   </div>
 
   <script>
