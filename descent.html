@@ -73,36 +73,35 @@
   <!-- Refresh Button -->
   <button id="refreshBtn" onclick="refreshWithAuth()">🔄 Video not playing? Tap here to refresh</button>
 
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const authParam = urlParams.get('auth');
-    const ref = document.referrer;
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const authParam = urlParams.get('auth');
 
-    let decoded = "";
-    try {
-      decoded = atob(authParam || "");
-    } catch (e) {
-      decoded = "";
-    }
+  let decoded = "";
+  try {
+    decoded = atob(authParam || "");
+  } catch (e) {
+    decoded = "";
+  }
 
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
-    const isFromFacebook = ref.includes("facebook.com");
+  const isCorrectAuth = decoded === "fbgroup=1223001576002236";
 
-    if (!isCorrectAuth || !isFromFacebook) {
-      window.location.href = "access-denied.html";
-    }
+  if (!isCorrectAuth) {
+    window.location.href = "access-denied.html";
+  }
 
-    // Show the refresh button after 5 seconds
-    setTimeout(() => {
-      document.getElementById('refreshBtn').style.display = 'block';
-    }, 5000);
+  // Show refresh button after 5 seconds
+  setTimeout(() => {
+    document.getElementById('refreshBtn').style.display = 'block';
+  }, 5000);
 
-    // Reload page while preserving auth token
-    function refreshWithAuth() {
-      const currentUrl = new URL(window.location.href);
-      window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
-    }
-  </script>
+  // Reload with auth token preserved
+  function refreshWithAuth() {
+    const currentUrl = new URL(window.location.href);
+    window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
+  }
+</script>
+
 
 </body>
 </html>
