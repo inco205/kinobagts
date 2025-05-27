@@ -16,7 +16,6 @@
       min-height: 100vh;
       padding: 40px 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      flex-direction: column;
     }
 
     .video-wrapper {
@@ -46,7 +45,7 @@
 
     #refreshBtn {
       display: none;
-      margin: 30px auto 0;
+      margin: 20px auto;
       padding: 15px 25px;
       background-color: #ff4444;
       color: white;
@@ -66,33 +65,13 @@
               referrerpolicy="unsafe-url">
       </iframe>
     </div>
+    <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
   </div>
 
-  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
-
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const authParam = urlParams.get('auth');
     const ref = document.referrer;
-    let decoded = "";
 
-    try {
-      decoded = atob(authParam || "");
-    } catch (e) {
-      decoded = "";
-    }
-
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
-    const isFromFacebook = ref.includes("facebook.com");
-
-    // Store session if access is valid
-    if (isCorrectAuth && isFromFacebook) {
-      sessionStorage.setItem("authorized", "true");
-    }
-
-    const isAuthorized = sessionStorage.getItem("authorized") === "true";
-
-    if (!isAuthorized) {
+    if (!ref.includes("facebook.com")) {
       window.location.href = "access-denied.html";
     }
 
@@ -101,11 +80,9 @@
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
 
-    // Refresh page while keeping auth param
     function refreshPage() {
-      const currentUrl = new URL(window.location.href);
-      const auth = currentUrl.searchParams.get("auth");
-      window.location.href = currentUrl.pathname + "?auth=" + auth;
+      // Reload without any query strings
+      location.href = window.location.pathname;
     }
   </script>
 </body>
