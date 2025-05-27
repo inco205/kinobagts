@@ -16,6 +16,7 @@
       min-height: 100vh;
       padding: 40px 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      flex-direction: column;
     }
 
     .video-wrapper {
@@ -42,6 +43,18 @@
       height: 100%;
       border: none;
     }
+
+    #refreshBtn {
+      display: none;
+      margin: 30px auto 0;
+      padding: 15px 25px;
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -52,31 +65,17 @@
               allowfullscreen
               referrerpolicy="unsafe-url">
       </iframe>
-
-
-      
     </div>
-    <button id="refreshBtn" onclick="refreshPage()" style="
-  display: none;
-  margin: 20px auto;
-  padding: 15px 25px;
-  background-color: #ff4444;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  cursor: pointer;
-">
-  🔄 Video not playing? Tap here to refresh
-</button>
   </div>
+
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const authParam = urlParams.get('auth');
     const ref = document.referrer;
-
     let decoded = "";
+
     try {
       decoded = atob(authParam || "");
     } catch (e) {
@@ -86,10 +85,18 @@
     const isCorrectAuth = decoded === "fbgroup=1223001576002236";
     const isFromFacebook = ref.includes("facebook.com");
 
-if (!document.referrer.includes("facebook.com")) {
-  window.location.href = "access-denied.html";
-}
- // Show refresh button after 5 seconds
+    // Store session if access is valid
+    if (isCorrectAuth && isFromFacebook) {
+      sessionStorage.setItem("authorized", "true");
+    }
+
+    const isAuthorized = sessionStorage.getItem("authorized") === "true";
+
+    if (!isAuthorized) {
+      window.location.href = "access-denied.html";
+    }
+
+    // Show refresh button after 5 seconds
     setTimeout(() => {
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
@@ -97,10 +104,9 @@ if (!document.referrer.includes("facebook.com")) {
     // Refresh page while keeping auth param
     function refreshPage() {
       const currentUrl = new URL(window.location.href);
-      window.location.href = ${currentUrl.pathname}?auth=${authParam};
+      const auth = currentUrl.searchParams.get("auth");
+      window.location.href = currentUrl.pathname + "?auth=" + auth;
     }
-
-    
   </script>
 </body>
 </html>
