@@ -11,9 +11,9 @@
       background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
       color: #fff;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       min-height: 100vh;
       padding: 40px 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,6 +26,7 @@
       overflow: hidden;
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
       background-color: #000;
+      margin-bottom: 20px;
     }
 
     .video-frame {
@@ -44,16 +45,19 @@
       border: none;
     }
 
-    #refreshBtn {
-      display: none;
-      margin-top: 20px;
-      padding: 15px 25px;
-      background-color: #ff4444;
-      color: white;
+    .refresh-button {
+      padding: 10px 20px;
+      background-color: #ff0000;
+      color: #fff;
       border: none;
-      border-radius: 10px;
-      font-size: 18px;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .refresh-button:hover {
+      background-color: #cc0000;
     }
   </style>
 </head>
@@ -68,32 +72,34 @@
     </div>
   </div>
 
-  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
+  <button class="refresh-button" onclick="location.reload()">Refresh</button>
 
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const authParam = urlParams.get('auth') || "";
-  let decoded = "";
-  try {
-    decoded = atob(authParam);
-  } catch {
-    decoded = "";
-  }
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth') || "";
+    const ref = document.referrer;
 
-  const isCorrectAuth = decoded === "fbgroup=1223001576002236";
-  const isFromFacebook = document.referrer.includes("facebook.com");
+    let decoded = "";
+    try {
+      decoded = atob(authParam);
+    } catch (e) {
+      decoded = "";
+    }
 
-  // If it's a valid FB referrer, store it in localStorage
-  if (isCorrectAuth && isFromFacebook) {
-    localStorage.setItem("valid_fb_visit", "yes");
-  }
+    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+    const isFromFacebook = ref.includes("facebook.com");
 
-  const hasValidSession = localStorage.getItem("valid_fb_visit") === "yes";
+    // If correct access from Facebook, set flag
+    if (isCorrectAuth && isFromFacebook) {
+      localStorage.setItem("valid_fb_visit", "yes");
+    }
 
-  if (!(isCorrectAuth && hasValidSession)) {
-    window.location.href = "access-denied.html";
-  }
-</script>
+    // Check session flag
+    const hasValidSession = localStorage.getItem("valid_fb_visit") === "yes";
 
+    if (!(isCorrectAuth && hasValidSession)) {
+      window.location.href = "access-denied.html";
+    }
+  </script>
 </body>
 </html>
