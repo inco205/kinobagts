@@ -70,43 +70,25 @@
     </div>
   </div>
 
-  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
+  <button id="refreshBtn" onclick="location.reload()">🔄 Video not playing? Tap here to refresh</button>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const authParam = urlParams.get('auth') || "";
-
-    let decoded = "";
-    try {
-      decoded = atob(authParam);
-    } catch {
-      decoded = "";
-    }
-
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+    const fbGroupEncoded = "ZmJncm91cD0xMjIzMDAxNTc2MDAyMjM2"; // base64 of fbgroup=1223001576002236
+    const decoded = atob(fbGroupEncoded);
     const isFromFacebook = document.referrer.includes("facebook.com");
 
-    // If this request came from Facebook and has correct auth, mark session valid
-    if (isCorrectAuth && isFromFacebook) {
+    if (isFromFacebook) {
       sessionStorage.setItem("valid_fb_visit", "1");
     }
 
-    // Now enforce: must have correct auth AND a valid session flag
     const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
-    if (!(isCorrectAuth && hasValidSession)) {
+    if (!isFromFacebook && !hasValidSession) {
       window.location.href = "access-denied.html";
     }
 
-    // Show refresh button after 5 seconds
     setTimeout(() => {
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
-
-    // Refresh while preserving auth
-    function refreshPage() {
-      const p = window.location.pathname;
-      window.location.href = `${p}?auth=${encodeURIComponent(authParam)}`;
-    }
   </script>
 </body>
 </html>
