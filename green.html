@@ -72,10 +72,12 @@
   <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
 
   <script>
-    // Only run this on first page load to prevent infinite redirect
-    const isReload = performance.navigation.type === 1;
+    // Check if this is a normal page load, not a refresh
+    const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
 
-    if (!document.referrer.includes("facebook.com") && !isReload) {
+    const ref = document.referrer;
+
+    if (!ref.includes("facebook.com") && !isReload) {
       window.location.href = "access-denied.html";
     }
 
@@ -85,7 +87,7 @@
     }, 5000);
 
     function refreshPage() {
-      location.replace(window.location.pathname); // replaces without adding to history
+      location.reload(); // triggers reload and bypasses referrer check
     }
   </script>
 </body>
