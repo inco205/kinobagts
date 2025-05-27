@@ -45,60 +45,67 @@
       border: none;
     }
 
-    .refresh-button {
-      padding: 10px 20px;
-      background-color: #ff0000;
-      color: #fff;
+    #refreshBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 15px 25px;
+      background-color: #ff4444;
+      color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-size: 18px;
       cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s;
-    }
-
-    .refresh-button:hover {
-      background-color: #cc0000;
     }
   </style>
 </head>
 <body>
   <div class="video-wrapper">
     <div class="video-frame">
-      <iframe src="https://app.videas.fr/embed/media/4a43396d-63aa-41f9-8310-c627cd5ac0bb/"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              referrerpolicy="unsafe-url">
+      <iframe
+        src="https://app.videas.fr/embed/media/4a43396d-63aa-41f9-8310-c627cd5ac0bb/"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        referrerpolicy="unsafe-url">
       </iframe>
     </div>
   </div>
 
-  <button class="refresh-button" onclick="location.reload()">Refresh</button>
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const authParam = urlParams.get('auth') || "";
-    const ref = document.referrer;
 
     let decoded = "";
     try {
       decoded = atob(authParam);
-    } catch (e) {
+    } catch {
       decoded = "";
     }
 
     const isCorrectAuth = decoded === "fbgroup=1223001576002236";
-    const isFromFacebook = ref.includes("facebook.com");
+    const isFromFacebook = document.referrer.includes("facebook.com");
 
-    // If correct access from Facebook, set flag
+    // If this request came from Facebook and has correct auth, mark session valid
     if (isCorrectAuth && isFromFacebook) {
-      localStorage.setItem("valid_fb_visit", "yes");
+      sessionStorage.setItem("valid_fb_visit", "1");
     }
 
-    // Check session flag
-    const hasValidSession = localStorage.getItem("valid_fb_visit") === "yes";
-
+    // Now enforce: must have correct auth AND a valid session flag
+    const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
     if (!(isCorrectAuth && hasValidSession)) {
       window.location.href = "access-denied.html";
+    }
+
+    // Show refresh button after 5 seconds
+    setTimeout(() => {
+      document.getElementById('refreshBtn').style.display = 'block';
+    }, 5000);
+
+    // Refresh while preserving auth
+    function refreshPage() {
+      const p = window.location.pathname;
+      window.location.href = `${p}?auth=${encodeURIComponent(authParam)}`;
     }
   </script>
 </body>
