@@ -70,34 +70,30 @@
 
   <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
 
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const authParam = urlParams.get('auth');
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const authParam = urlParams.get('auth') || "";
+  let decoded = "";
+  try {
+    decoded = atob(authParam);
+  } catch {
+    decoded = "";
+  }
 
-    let decoded = "";
-    try {
-      decoded = atob(authParam || "");
-    } catch (e) {
-      decoded = "";
-    }
+  const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+  const isFromFacebook = document.referrer.includes("facebook.com");
 
-    // Only check auth token
-    const isCorrectAuth = decoded === "fbgroup=1223001576002236";
+  // If it's a valid FB referrer, store it in localStorage
+  if (isCorrectAuth && isFromFacebook) {
+    localStorage.setItem("valid_fb_visit", "yes");
+  }
 
-    if (!isCorrectAuth) {
-      window.location.href = "access-denied.html";
-    }
+  const hasValidSession = localStorage.getItem("valid_fb_visit") === "yes";
 
-    // Show refresh button after 5 seconds
-    setTimeout(() => {
-      document.getElementById('refreshBtn').style.display = 'block';
-    }, 5000);
+  if (!(isCorrectAuth && hasValidSession)) {
+    window.location.href = "access-denied.html";
+  }
+</script>
 
-    // Refresh page while keeping auth param
-    function refreshPage() {
-      const currentUrl = new URL(window.location.href);
-      window.location.href = `${currentUrl.pathname}?auth=${authParam}`;
-    }
-  </script>
 </body>
 </html>
