@@ -13,6 +13,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       min-height: 100vh;
       padding: 40px 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -45,7 +46,7 @@
 
     #refreshBtn {
       display: none;
-      margin: 20px auto;
+      margin-top: 20px;
       padding: 15px 25px;
       background-color: #ff4444;
       color: white;
@@ -57,6 +58,7 @@
   </style>
 </head>
 <body>
+
   <div class="video-wrapper">
     <div class="video-frame">
       <iframe src="https://app.videas.fr/embed/media/7891abce-010e-43ee-abfd-1b76775394ba/"
@@ -65,13 +67,15 @@
               referrerpolicy="unsafe-url">
       </iframe>
     </div>
-    <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
   </div>
 
-  <script>
-    const ref = document.referrer;
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
 
-    if (!ref.includes("facebook.com")) {
+  <script>
+    // Only run this on first page load to prevent infinite redirect
+    const isReload = performance.navigation.type === 1;
+
+    if (!document.referrer.includes("facebook.com") && !isReload) {
       window.location.href = "access-denied.html";
     }
 
@@ -81,8 +85,7 @@
     }, 5000);
 
     function refreshPage() {
-      // Reload without any query strings
-      location.href = window.location.pathname;
+      location.replace(window.location.pathname); // replaces without adding to history
     }
   </script>
 </body>
