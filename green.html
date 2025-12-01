@@ -11,9 +11,9 @@
       background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
       color: #fff;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       min-height: 100vh;
       padding: 40px 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,6 +26,8 @@
       overflow: hidden;
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
       background-color: #000;
+      margin-bottom: 20px;
+      position: relative;
     }
 
     .video-frame {
@@ -44,6 +46,18 @@
       border: none;
     }
 
+    /* 🔥 Blocks Google Drive pop-out button */
+    .block-drive-popup {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: rgba(0,0,0,0.4); /* slightly dark overlay */
+      z-index: 10;
+      pointer-events: auto;
+    }
+
     #refreshBtn {
       display: none;
       margin-top: 20px;
@@ -58,36 +72,41 @@
   </style>
 </head>
 <body>
-
   <div class="video-wrapper">
+    <div class="block-drive-popup"></div> <!-- 🔥 Added this line -->
     <div class="video-frame">
-      <iframe src="https://app.videas.fr/embed/media/7891abce-010e-43ee-abfd-1b76775394ba/"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              referrerpolicy="unsafe-url">
+      <iframe 
+        src="https://drive.google.com/file/d/1yNinjQlTiZnwZ_Z664xV0gVSNDImEXCF/preview"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
   </div>
 
-  <button id="refreshBtn" onclick="refreshPage()">🔄 Кино гарахгүй байвал энд дараарай</button>
+  
 
   <script>
-    // Check if this is a normal page load, not a refresh
-    const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; 
+    const decoded = atob(fbGroupEncoded);
+    const isFromFacebook = document.referrer.includes("facebook.com");
 
-    const ref = document.referrer;
+    if (isFromFacebook) {
+      sessionStorage.setItem("valid_fb_visit", "1");
+    }
 
-    if (!ref.includes("facebook.com") && !isReload) {
+    const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
+
+    if (!isFromFacebook && !hasValidSession) {
       window.location.href = "access-denied.html";
     }
 
-    // Show refresh button after 5 seconds
     setTimeout(() => {
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
 
     function refreshPage() {
-      location.reload(); // triggers reload and bypasses referrer check
+      location.reload();
     }
   </script>
 </body>
