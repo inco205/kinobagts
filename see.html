@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>I See You</title>
+  <title>I see you</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -27,6 +27,7 @@
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
       background-color: #000;
       margin-bottom: 20px;
+      position: relative;
     }
 
     .video-frame {
@@ -45,6 +46,18 @@
       border: none;
     }
 
+    /* 🔥 Blocks Google Drive pop-out button */
+    .block-drive-popup {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: rgba(0,0,0,0.4);
+      z-index: 10;
+      pointer-events: auto;
+    }
+
     #refreshBtn {
       display: none;
       margin-top: 20px;
@@ -60,9 +73,10 @@
 </head>
 <body>
   <div class="video-wrapper">
+    <div class="block-drive-popup"></div> 
     <div class="video-frame">
-      <iframe
-        src="https://app.videas.fr/embed/media/9877c47a-63b1-45bb-a7f2-15f070ca48cf/"
+      <iframe 
+        src="https://drive.google.com/file/d/1_OyM7DiMv4zjUqJ1jIACHEvs96aR4YBz/preview"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
         referrerpolicy="no-referrer-when-downgrade">
@@ -70,29 +84,30 @@
     </div>
   </div>
 
-  <button id="refreshBtn" onclick="location.reload()">🔄 Кино гарахгүй байвал энд дараарай</button>
+
 
   <script>
-    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; // base64 of fbgroup=2218891068566945
+    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; 
     const decoded = atob(fbGroupEncoded);
     const isFromFacebook = document.referrer.includes("facebook.com");
 
-    // If from Facebook, store valid session
     if (isFromFacebook) {
       sessionStorage.setItem("valid_fb_visit", "1");
     }
 
     const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
 
-    // Deny access if not from Facebook and no valid session
     if (!isFromFacebook && !hasValidSession) {
       window.location.href = "access-denied.html";
     }
 
-    // Show refresh button after 5 seconds
     setTimeout(() => {
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
+
+    function refreshPage() {
+      location.reload();
+    }
   </script>
 </body>
 </html>
