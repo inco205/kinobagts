@@ -27,6 +27,7 @@
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
       background-color: #000;
       margin-bottom: 20px;
+      position: relative;
     }
 
     .video-frame {
@@ -45,8 +46,21 @@
       border: none;
     }
 
+    /* 🔥 Block Google Drive pop-out button */
+    .block-drive-popup {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: rgba(0,0,0,0.4);
+      z-index: 10;
+      pointer-events: auto;
+    }
+
     #refreshBtn {
       display: none;
+      margin-top: 20px;
       padding: 15px 25px;
       background-color: #ff4444;
       color: white;
@@ -59,19 +73,21 @@
 </head>
 <body>
   <div class="video-wrapper">
+    <div class="block-drive-popup"></div>
     <div class="video-frame">
-      <iframe src="https://app.videas.fr/embed/media/84c08955-961e-4482-b0c1-cca6ba9b1cb7"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade">
+      <iframe 
+        src="https://drive.google.com/file/d/1ZUMPzX5fDePzLLnNch3NCqTcsYVF1fCq/preview"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
   </div>
 
-  <button id="refreshBtn" onclick="refreshPage()">🔄 Кино гарахгүй байвал энд дараарай</button>
+
 
   <script>
-    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; // base64 of fbgroup=2218891068566945
+    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; 
     const decoded = atob(fbGroupEncoded);
     const isFromFacebook = document.referrer.includes("facebook.com");
 
@@ -85,12 +101,10 @@
       window.location.href = "access-denied.html";
     }
 
-    // Show refresh button after 5 seconds
     setTimeout(() => {
       document.getElementById('refreshBtn').style.display = 'block';
     }, 5000);
 
-    // Refresh page
     function refreshPage() {
       location.reload();
     }
