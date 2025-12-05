@@ -11,7 +11,6 @@
       background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
       color: #fff;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
@@ -26,8 +25,6 @@
       overflow: hidden;
       box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
       background-color: #000;
-      margin-bottom: 20px;
-      position: relative;
     }
 
     .video-frame {
@@ -45,69 +42,38 @@
       height: 100%;
       border: none;
     }
-
-    /* 🔥 Block Google Drive pop-out button */
-    .block-drive-popup {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 60px;
-      height: 60px;
-      background: rgba(0,0,0,0.4);
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    #refreshBtn {
-      display: none;
-      margin-top: 20px;
-      padding: 15px 25px;
-      background-color: #ff4444;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
   <div class="video-wrapper">
-    <div class="block-drive-popup"></div>
     <div class="video-frame">
-      <iframe 
-        src="https://drive.google.com/file/d/1ZUMPzX5fDePzLLnNch3NCqTcsYVF1fCq/preview"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade">
+      <iframe src="https://app.videas.fr/embed/media/7891abce-010e-43ee-abfd-1b76775394ba/"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="unsafe-url">
       </iframe>
     </div>
   </div>
 
-
-
   <script>
-    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; 
-    const decoded = atob(fbGroupEncoded);
-    const isFromFacebook = document.referrer.includes("facebook.com");
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth');
+    const ref = document.referrer;
 
-    if (isFromFacebook) {
-      sessionStorage.setItem("valid_fb_visit", "1");
+    let decoded = "";
+    try {
+      decoded = atob(authParam || "");
+    } catch (e) {
+      decoded = "";
     }
 
-    const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
+    const isCorrectAuth = decoded === "fbgroup=2218891068566945";
+    const isFromFacebook = ref.includes("facebook.com");
 
-    if (!isFromFacebook && !hasValidSession) {
-      window.location.href = "access-denied.html";
-    }
+if (!document.referrer.includes("facebook.com")) {
+  window.location.href = "access-denied.html";
+}
 
-    setTimeout(() => {
-      document.getElementById('refreshBtn').style.display = 'block';
-    }, 5000);
-
-    function refreshPage() {
-      location.reload();
-    }
   </script>
 </body>
 </html>
