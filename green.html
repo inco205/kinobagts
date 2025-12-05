@@ -46,18 +46,6 @@
       border: none;
     }
 
-    /* 🔥 Blocks Google Drive pop-out button */
-    .block-drive-popup {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 60px;
-      height: 60px;
-      background: rgba(0,0,0,0.4); /* slightly dark overlay */
-      z-index: 10;
-      pointer-events: auto;
-    }
-
     #refreshBtn {
       display: none;
       margin-top: 20px;
@@ -73,18 +61,20 @@
 </head>
 <body>
   <div class="video-wrapper">
-    <div class="block-drive-popup"></div> <!-- 🔥 Added this line -->
     <div class="video-frame">
       <iframe 
-        src="https://drive.google.com/file/d/1yNinjQlTiZnwZ_Z664xV0gVSNDImEXCF/preview"
+        src="https://app.videas.fr/embed/media/7891abce-010e-43ee-abfd-1b76775394ba/"
+        width="100%" height="100%"
+        frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade">
+        style="position: absolute; top: 0; left: 0"
+        referrerpolicy="unsafe-url">
       </iframe>
     </div>
   </div>
 
-  
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Кино гарахгүй байвал энд дараарай</button>
 
   <script>
     const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; 
@@ -111,5 +101,3 @@
   </script>
 </body>
 </html>
-
-
