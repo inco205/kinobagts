@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sleep Tight</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(135deg, #000000, #1b1b1b, #2d2d2d);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      background-color: #000;
+      margin-bottom: 20px;
+    }
+
+    .video-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #refreshBtn {
+      display: none;
+      padding: 15px 25px;
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-wrapper">
+    <div class="video-frame">
+      <iframe src="https://app.videas.fr/embed/media/84c08955-961e-4482-b0c1-cca6ba9b1cb7"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+
+  <button id="refreshBtn" onclick="refreshPage()">🔄 Video not playing? Tap here to refresh</button>
+
+  <script>
+    const fbGroupEncoded = "ZmJncm91cD0yMjE4ODkxMDY4NTY2OTQ1"; // base64 of fbgroup=2218891068566945
+    const decoded = atob(fbGroupEncoded);
+    const isFromFacebook = document.referrer.includes("facebook.com");
+
+    if (isFromFacebook) {
+      sessionStorage.setItem("valid_fb_visit", "1");
+    }
+
+    const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
+
+    if (!isFromFacebook && !hasValidSession) {
+      window.location.href = "access-denied.html";
+    }
+
+    // Show refresh button after 5 seconds
+    setTimeout(() => {
+      document.getElementById('refreshBtn').style.display = 'block';
+    }, 5000);
+
+    // Refresh page
+    function refreshPage() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
