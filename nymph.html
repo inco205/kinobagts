@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nymph</title>
+  <title>Your Movie Title</title>
 
+  <!-- Wistia Scripts -->
   <script src="https://fast.wistia.com/player.js" async></script>
-  <script src=""https://fast.wistia.com/embed/xz0a1prevo.js" async type="module"></script>
+  <script src="https://fast.wistia.com/embed/xz0a1prevo.js" async type="module"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,27 +60,29 @@
 <body>
 
   <div class="video-wrapper">
-    <wistia-player media-id="bwtscpmxl3"></wistia-player>
+    <wistia-player media-id="xz0a1prevo"></wistia-player>
   </div>
 
-
+  <button id="refreshBtn" onclick="location.reload()">
+    🔄 Video not playing? Tap here to refresh
+  </button>
 
   <script>
     const isFromFacebook = document.referrer.includes("facebook.com");
 
-    // If arrived from Facebook, allow this session
+    // Allow session if user came from Facebook
     if (isFromFacebook) {
       sessionStorage.setItem("valid_fb_visit", "1");
     }
 
     const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
 
-    // Block access if not from Facebook and no session
+    // Block if not from Facebook and no session
     if (!isFromFacebook && !hasValidSession) {
       window.location.href = "access-denied.html";
     }
 
-    // Remove fbclid from URL so it becomes clean
+    // Remove fbclid so URL becomes clean
     const url = new URL(window.location.href);
     if (url.searchParams.has("fbclid")) {
       url.searchParams.delete("fbclid");
@@ -94,6 +97,3 @@
 
 </body>
 </html>
-
-
-
