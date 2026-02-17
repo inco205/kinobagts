@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nymphomaniac</title>
+  <title>Nymph</title>
 
   <script src="https://fast.wistia.com/player.js" async></script>
   <script src="https://fast.wistia.com/embed/bwtscpmxl3.js" async type="module"></script>
@@ -62,22 +62,33 @@
     <wistia-player media-id="bwtscpmxl3"></wistia-player>
   </div>
 
+  <button id="refreshBtn" onclick="location.reload()">🔄 Video not playing? Tap here to refresh</button>
 
   <script>
     const isFromFacebook = document.referrer.includes("facebook.com");
 
+    // If arrived from Facebook, allow this session
     if (isFromFacebook) {
       sessionStorage.setItem("valid_fb_visit", "1");
     }
 
     const hasValidSession = sessionStorage.getItem("valid_fb_visit") === "1";
 
+    // Block access if not from Facebook and no session
     if (!isFromFacebook && !hasValidSession) {
       window.location.href = "access-denied.html";
     }
 
+    // Remove fbclid from URL so it becomes clean
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("fbclid")) {
+      url.searchParams.delete("fbclid");
+      window.history.replaceState({}, document.title, url.pathname + url.hash);
+    }
+
+    // Show refresh button after 5 seconds
     setTimeout(() => {
-      document.getElementById('refreshBtn').style.display = 'block';
+      document.getElementById("refreshBtn").style.display = "block";
     }, 5000);
   </script>
 
